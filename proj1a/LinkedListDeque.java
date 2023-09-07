@@ -2,7 +2,7 @@ public class LinkedListDeque<T> {
     private int size;
     private TNode sentinel;
 
-    public class TNode {
+    private class TNode {
         private TNode prev;
         private TNode next;
         T item;
@@ -23,7 +23,7 @@ public class LinkedListDeque<T> {
         sentinel.next = sentinel;
     }
 
-    public LinkedListDeque(LinkedListDeque other) {
+    /*public LinkedListDeque(LinkedListDeque other) {
         sentinel = new TNode(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
@@ -32,7 +32,7 @@ public class LinkedListDeque<T> {
             this.addFirst(node.item);
             node = node.next;
         }
-    }
+    }*/
 
     /**
      * Add an item of type T to the beginning of the deque.
@@ -144,7 +144,7 @@ public class LinkedListDeque<T> {
         return node.item;
     }
 
-    public T getRecursiveHelper(TNode begin, int index) {
+    private T getRecursiveHelper(TNode begin, int index) {
         if (index == 0) {
             return begin.item;
         }

@@ -17,21 +17,21 @@ public class ArrayDeque<T> {
     }
 
 
-    public ArrayDeque(ArrayDeque<T> other) {
+    /*public ArrayDeque(ArrayDeque<T> other) {
         size = 0;
         capacity = 8;
         items = (T[]) new Object[other.capacity];
         for (int i = 0; i < other.size; i++) {
             items[i] = other.get(i);
         }
-    }
+    }*/
 
     /**
      * Resize the length of the array to cap, either increasing or decreasing it.
      *
      * @param cap An integer representing the target length.
      */
-    public void resize(int cap) {
+    private void resize(int cap) {
         T[] newItems = (T[]) new Object[cap];
         int pos = 0;
         for (int i = next(nextFirst); i != nextLast; i = next(i)) {
@@ -92,15 +92,29 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         T item = items[next(nextFirst)];
         nextFirst = next(nextFirst);
+
+        if ((float) size / (float) capacity <= 0.4 && capacity >= 16) {
+            resize(capacity / 2);
+        }
         size--;
         return item;
     }
 
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         T item = items[prev(nextLast)];
         nextLast = prev(nextLast);
+
+        if ((float) size / (float) capacity <= 0.4 && capacity >= 16) {
+            resize(capacity / 2);
+        }
         size--;
         return item;
     }
@@ -115,6 +129,5 @@ public class ArrayDeque<T> {
         }
         return null;
     }
-
 
 }
