@@ -96,12 +96,13 @@ public class ArrayDeque<T> {
             return null;
         }
         T item = items[next(nextFirst)];
+        items[next(nextFirst)] = null;
         nextFirst = next(nextFirst);
-
+        size--;
         if ((float) size / (float) capacity <= 0.4 && capacity >= 16) {
             resize(capacity / 2);
         }
-        size--;
+
         return item;
     }
 
@@ -110,12 +111,13 @@ public class ArrayDeque<T> {
             return null;
         }
         T item = items[prev(nextLast)];
+        items[prev(nextLast)] = null;
         nextLast = prev(nextLast);
-
+        size--;
         if ((float) size / (float) capacity <= 0.4 && capacity >= 16) {
             resize(capacity / 2);
         }
-        size--;
+
         return item;
     }
 
