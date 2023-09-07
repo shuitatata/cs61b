@@ -34,10 +34,7 @@ public class ArrayDeque<T> {
     public void resize(int cap) {
         T[] newItems = (T[]) new Object[cap];
         int pos = 0;
-        for (int i = nextFirst + 1; i != nextLast; i++) {
-            if (i == cap) {
-                i = 0;
-            }
+        for (int i = next(nextFirst); i != nextLast; i = next(i)) {
             newItems[pos] = items[i];
             pos++;
         }
@@ -62,8 +59,8 @@ public class ArrayDeque<T> {
     }
 
     public void addFirst(T item) {
-        if (size == capacity) {
-            resize(size * 2);
+        if (size == capacity - 1) {
+            resize(capacity * 2);
         }
         items[nextFirst] = item;
         nextFirst = prev(nextFirst);
@@ -71,8 +68,8 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
-        if (size == capacity) {
-            resize(size * 2);
+        if (size == capacity - 1) {
+            resize(capacity * 2);
         }
         items[nextLast] = item;
         nextLast = next(nextLast);
@@ -109,11 +106,11 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        int Last = nextLast - 1;
-        if (Last <= nextFirst) {
-            Last += capacity;
+        int last = prev(nextLast);
+        if (last <= nextFirst) {
+            last += capacity;
         }
-        if (index + nextFirst + 1 <= Last) {
+        if (next(index + nextFirst) <= last) {
             return items[(index + nextFirst + 1) % capacity];
         }
         return null;
