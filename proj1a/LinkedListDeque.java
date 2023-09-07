@@ -1,16 +1,16 @@
-public class LinkedListDeque <T> {
+public class LinkedListDeque<T> {
     private int size;
     private TNode sentinel;
 
     public class TNode {
-        public TNode prev;
-        public TNode next;
+        private TNode prev;
+        private TNode next;
         T item;
 
         public TNode(T item, TNode prev, TNode next) {
             this.item = item;
             this.prev = prev;
-            this. next = next;
+            this.next = next;
         }
     }
 
@@ -27,20 +27,23 @@ public class LinkedListDeque <T> {
         sentinel = new TNode(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
-        TNode node  = other.sentinel.next;
-        while(node != other.sentinel) {
+        TNode node = other.sentinel.next;
+        while (node != other.sentinel) {
             this.addFirst(node.item);
             node = node.next;
         }
     }
+
     /**
      * Add an item of type T to the beginning of the deque.
+     *
      * @param item The element that is waiting to be added.
      */
     public void addFirst(T item) {
-        TNode node = new TNode(item, sentinel.prev, sentinel.next);
+        TNode node = new TNode(item, sentinel, sentinel.next);
+        sentinel.next.prev = node;
         sentinel.next = node;
-        if(this.isEmpty()) {
+        if (this.isEmpty()) {
             sentinel.prev = node;
         }
         size++;
@@ -48,12 +51,14 @@ public class LinkedListDeque <T> {
 
     /**
      * Add an item of type T to the end of the deque;
+     *
      * @param item The element that is waiting to be added.
      */
     public void addLast(T item) {
-        TNode node = new TNode(item, sentinel.prev.prev, sentinel);
+        TNode node = new TNode(item, sentinel.prev, sentinel);
+        sentinel.prev.next = node;
         sentinel.prev = node;
-        if(this.isEmpty()) {
+        if (this.isEmpty()) {
             sentinel.next = node;
         }
         size++;
@@ -61,6 +66,7 @@ public class LinkedListDeque <T> {
 
     /**
      * Return whether the list is empty
+     *
      * @return A boolean value representing whether the deque is empty.
      */
     public boolean isEmpty() {
@@ -69,6 +75,7 @@ public class LinkedListDeque <T> {
 
     /**
      * Return the number of items in the deque
+     *
      * @return An integer value representing the size of the deque.
      */
     public int size() {
@@ -80,7 +87,7 @@ public class LinkedListDeque <T> {
      */
     public void printDeque() {
         TNode node = sentinel.next;
-        while(node != sentinel) {
+        while (node != sentinel) {
             System.out.print(node.item + " ");
             node = node.next;
         }
@@ -89,14 +96,15 @@ public class LinkedListDeque <T> {
 
     /**
      * Removes and returns the item at the front of the deque.
+     *
      * @return The item at the front of the deque. If no such item exists, return null.
      */
     public T removeFirst() {
-        if(this.isEmpty()) {
+        if (this.isEmpty()) {
             return null;
         }
         T result = sentinel.next.item;
-        sentinel.next.next = sentinel.next;
+        sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
         size--;
         return result;
@@ -104,14 +112,15 @@ public class LinkedListDeque <T> {
 
     /**
      * Removes and returns the item at the back of the deque.
+     *
      * @return The item at the back of the deque. If no such item exists, returns null.
      */
     public T removeLast() {
-        if(this.isEmpty()) {
+        if (this.isEmpty()) {
             return null;
         }
         T result = sentinel.prev.item;
-        sentinel.prev.prev = sentinel.prev;
+        sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
         size--;
         return result;
@@ -119,15 +128,16 @@ public class LinkedListDeque <T> {
 
     /**
      * Gets the item at the given index.
+     *
      * @param index An integer.
      * @return The item at the given index. If no such item exists, returns null.
      */
     public T get(int index) {
-        if(index >= size) {
+        if (index >= size) {
             return null;
         }
         TNode node = sentinel.next;
-        while(index > 0 ) {
+        while (index > 0) {
             node = node.next;
             index--;
         }
@@ -135,18 +145,20 @@ public class LinkedListDeque <T> {
     }
 
     public T getRecursiveHelper(TNode begin, int index) {
-        if(index==0){
+        if (index == 0) {
             return begin.item;
         }
-        return this.getRecursiveHelper(begin.next, index-1);
+        return this.getRecursiveHelper(begin.next, index - 1);
     }
+
     /**
      * Gets the
      */
     public T getRecursive(int index) {
-        if(index >= size) {
+        if (index >= size) {
             return null;
         }
         return getRecursiveHelper(sentinel.next, index);
     }
 }
+

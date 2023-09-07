@@ -1,11 +1,9 @@
-import java.io.ObjectStreamException;
-
 public class ArrayDeque<T> {
-    public T[] items;
-    public int nextFirst;
-    public int nextLast;
-    public int size;
-    public int capacity;
+    private T[] items;
+    private int nextFirst;
+    private int nextLast;
+    private int size;
+    private int capacity;
 
     /**
      * Create an empty deque;
@@ -14,6 +12,8 @@ public class ArrayDeque<T> {
         size = 0;
         capacity = 8;
         items = (T[]) new Object[capacity];
+        nextFirst = prev(0);
+        nextLast = 0;
     }
 
 
@@ -109,9 +109,15 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        if ((index + nextFirst) % capacity <= nextLast) {
-            return items[(index + nextFirst) % capacity];
+        int Last = nextLast - 1;
+        if (Last <= nextFirst) {
+            Last += capacity;
+        }
+        if (index + nextFirst + 1 <= Last) {
+            return items[(index + nextFirst + 1) % capacity];
         }
         return null;
     }
+
+
 }

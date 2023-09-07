@@ -31,6 +31,14 @@ public class ArrayDequeTest {
         }
     }
 
+    public static boolean checkNum(int expected, int actual) {
+        if (expected != actual) {
+            System.out.println("Num() returned " + actual + ",but expected: " + expected);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Adds a few things to the list, checking isEmpty() and size() are correct,
      * finally printing the results.
@@ -85,9 +93,57 @@ public class ArrayDequeTest {
 
     }
 
+    public static void addFirstRemoveLastTest() {
+        System.out.println("Running addFirst/removeLast test.");
+        ArrayDeque<Integer> ad1 = new ArrayDeque<Integer>();
+
+        ad1.addFirst(1);
+        ad1.addFirst(2);
+        ad1.printDeque();
+        
+        int remove1 = ad1.removeLast();
+
+
+        ad1.addFirst(3);
+        ad1.addFirst(4);
+        int remove2 = ad1.removeLast();
+
+        ad1.printDeque();
+
+        boolean passed = checkNum(1, remove1) &&
+                checkNum(2, remove2) &&
+                checkNum(ad1.get(0), 4) &&
+                checkNum(ad1.get(1), 3);
+
+        printTestStatus(passed);
+    }
+
+    public static void addLastRemoveFirstTest() {
+        System.out.println("Running addLast/removeFirst test.");
+        ArrayDeque<Integer> ad1 = new ArrayDeque<Integer>();
+
+        ad1.addLast(1);
+        ad1.addLast(2);
+        int remove1 = ad1.removeFirst();
+        ad1.addLast(3);
+        ad1.addLast(4);
+        int remove2 = ad1.removeFirst();
+
+        ad1.printDeque();
+
+        boolean passed = checkNum(1, remove1) &&
+                checkNum(2, remove2) &&
+                checkNum(ad1.get(0), 3) &&
+                checkNum(ad1.get(1), 4);
+
+        printTestStatus(passed);
+    }
+
     public static void main(String[] args) {
         System.out.println("Running tests.\n");
         addIsEmptySizeTest();
         addRemoveTest();
+        addFirstRemoveLastTest();
+        addLastRemoveFirstTest();
     }
 } 
